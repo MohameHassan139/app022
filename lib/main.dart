@@ -5,6 +5,7 @@ import 'package:app022/shared/themes/light_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'layout/cubit/home_cubit.dart';
 import 'layout/hom_layout.dart';
 import 'main_cubit/main_cubit.dart';
 import 'main_cubit/main_state.dart';
@@ -28,11 +29,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MainCubit()
-        ..changeMode(
-          formShered: fromShered,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) {
+            return NewsCubit()..getBusiness();
+          },
         ),
+        BlocProvider(
+          create: (context) => MainCubit()
+            ..changeMode(
+              formShered: fromShered,
+            ),
+        )
+      ],
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {},
         builder: (context, state) {

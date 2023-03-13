@@ -133,4 +133,31 @@ class NewsCubit extends Cubit<NewsState> {
       emit(GetSportNewsSuccess());
     }
   }
+
+
+
+    List<dynamic> sreach = [];
+  void getSearch(String key) {
+   
+      emit(GetSearchNewsLoading());
+      DioHelper().getdata(
+        path: 'v2/everything',
+        map: {
+          'q': key,
+          
+          'apiKey': '0943403025f8450085cd31f003715127',
+        },
+      )?.then((value) {
+        sreach = value.data['articles'];
+        print(sreach[0]['title']);
+
+        // print(value.data['articles'][0]['title']);
+        emit(GetSearchNewsSuccess());
+      }).catchError((error) {
+        print(error.toString());
+        emit(GetSearchNewsError(error.toString()));
+      });
+    
+  }
 }
+ // https://newsapi.org/v2/everything?q=tesla&apiKey=0943403025f8450085cd31f003715127
