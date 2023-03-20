@@ -12,28 +12,38 @@ class SearchScreen extends StatelessWidget {
     TextEditingController searchController = TextEditingController();
     var list = NewsCubit.get(context).sreach;
     return BlocConsumer<NewsCubit, NewsState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+         print(
+            "from listener !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(),
-          body: Expanded(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: defaultTextFormField(
-                    labelText: 'Sreach',
-                    textController: searchController,
-                   
-                    prefixIcon: Icons.search,
-                    onChanged: (value) {
-                      NewsCubit.get(context).getSearch(value!);
-                    },
-                  ),
+          // appBar: AppBar(),
+          body: Column(
+            
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: defaultTextFormField(
+                  labelText: 'Sreach',
+                  textController: searchController,
+                  prefixIcon: Icons.search,
+                  onChanged: (value) {
+                    print(
+                        "from onchange!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    value ??= 'a';
+                    NewsCubit.get(context).getSearch(value);
+                  },
+                  onTap: () {
+                    
+                    print(
+                        "from onTap!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    
+                  },
                 ),
-                listBulider(context: context, list: list),
-              ],
-            ),
+              ),
+              listBulider(context: context, list: list),
+            ],
           ),
         );
       },

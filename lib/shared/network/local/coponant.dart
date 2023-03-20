@@ -4,58 +4,64 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../layout/cubit/home_cubit.dart';
 import '../../../layout/cubit/home_states.dart';
+// import '../../../moduls/webview/webview.dart';
 
-Widget listItem(Map list, context) => Container(
-      margin: const EdgeInsets.only(right: 20, left: 20),
-      height: 120,
-      child: Row(
-        children: [
-          Container(
-            height: 120,
-            width: 120,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-            child: Image(
-              image: NetworkImage(
-                '''${list["urlToImage"]}''',
-              ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Builder(builder: (context) {
-                    return Text(
-                      '''${list['title']}''',
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    );
-                  }),
+Widget listItem(Map list, context) => InkWell(
+      onTap: () {
+        // navigateto(context: context, wiget: Webview(url: list['url'], ));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 20, left: 20),
+        height: 120,
+        child: Row(
+          children: [
+            Container(
+              height: 120,
+              width: 120,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
                 ),
-                Text(
-                  '''${list['publishedAt']}''',
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.grey,
+              ),
+              child: Image(
+                image: NetworkImage(
+                  '''${list["urlToImage"]}''',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Builder(builder: (context) {
+                      return Text(
+                        '''${list['title']}''',
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      );
+                    }),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                  Text(
+                    '''${list['publishedAt']}''',
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
 
@@ -79,10 +85,10 @@ Widget defaultButton({
         ));
 
 Widget defaultTextFormField({
-  required TextEditingController textController,
-  VoidCallback Function(String)? onFieldSubmitted,
-  VoidCallback? Function(String?)? onChanged,
   required String labelText,
+  required TextEditingController textController,
+  VoidCallback? Function(String?)? onFieldSubmitted,
+  VoidCallback? Function(String?)? onChanged,
   String? Function(String?)? validater,
   IconData? suffix,
   IconData? prefixIcon,
@@ -112,17 +118,17 @@ Widget defaultTextFormField({
 void navigateto({required BuildContext context, required Widget wiget}) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => wiget));
 
-Widget listBulider({required BuildContext context, required list}) =>
+Widget listBulider({required BuildContext context, required List list}) =>
     BlocConsumer<NewsCubit, NewsState>(
       listener: (context, state) {},
       builder: (context, state) => ConditionalBuilder(
-        condition: NewsCubit.get(context).business.isNotEmpty,
+        condition: list.isNotEmpty,
         builder: (context) => ListView.separated(
           itemBuilder: (context, index) => listItem(
-            NewsCubit.get(context).business[index],
+            list[index],
             context,
           ),
-          itemCount: NewsCubit.get(context).business.length,
+          itemCount:list.length,
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(
               height: 20,
